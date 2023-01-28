@@ -7,11 +7,11 @@ import MoviesCardList from '../MoviesCardList/MoviesCardList';
 function Movies() {
 
    return (
-      <>
+      <main className='movies'>
          <SearchForm />
          <MoviesCardList/>
          <Preloader/>
-      </>
+      </main>
    )
 }
 
