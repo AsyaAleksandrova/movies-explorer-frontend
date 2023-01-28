@@ -1,7 +1,7 @@
 import React from 'react';
-import './Register.css'
+import './NoPage.css';
 
-function Register() {
+function NoPage() {
 
    return (
       <div>
@@ -10,4 +10,4 @@ function Register() {
    )
 }
 
-export default Register;
+export default NoPage;
