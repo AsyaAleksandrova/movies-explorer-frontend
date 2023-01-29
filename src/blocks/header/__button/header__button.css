@@ -8,6 +8,7 @@
    font-weight: 500;
    font-size: 12px;
    line-height: 16px;
+   transition: all 0.5s ease;
 }
 
 @media screen and (max-width: 320px) {
@@ -16,4 +17,9 @@
       padding: 5px 12px;
       height: 26px;
    }
+}
+
+
+.header__button:active{
+   transform: scale(0.96);
 }

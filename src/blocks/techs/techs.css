@@ -1,18 +1,19 @@
-.about {
-   background-color: #202020;
-   padding: 1100px 70px;
+.techs {
+   background-color: #272727;
+   padding: 100px 70px;
    max-width: 1140px;
    margin: 0 auto;
 }
 
 @media screen and (max-width: 768px) {
-   .about {
+   .techs {
       padding: 90px 50px;
    }
 }
 
 @media screen and (max-width: 480px) {
-   .about {
-      padding: 70px 14px;
+   .techs {
+      background-color: #202020;
+      padding: 70px 18px;
    }
 }

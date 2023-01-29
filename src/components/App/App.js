@@ -12,18 +12,19 @@ import Footer from '../Footer/Footer';
 import NoPage from '../NoPage/NoPage';
 
 function App() {
-  const [loggedIn, setLoggedIn] = useState(true);
+  // eslint-disable-next-line no-unused-vars
+  const [loggedIn, setLoggedIn] = useState(false);
 
   return (
     <>
       <Header loggedIn={loggedIn} />
       <Routes>
           <Route path='/' element={ <Main /> } />
-          <Route path='movies' element={ <Movies /> } />
-          <Route path='saved-movies' element={<SavedMovies />} />
-          <Route path='profile' element={ <Profile/> } />
-          <Route path='signup' element={ <Register /> } />
-          <Route path='signin' element={<Login />} />
+          <Route path='/movies' element={ <Movies /> } />
+          <Route path='/saved-movies' element={<SavedMovies />} />
+          <Route path='/profile' element={ <Profile/> } />
+          <Route path='/signup' element={ <Register /> } />
+          <Route path='/signin' element={<Login />} />
         <Route path="*" element={<NoPage />} />
       </Routes>
       <Footer /> 

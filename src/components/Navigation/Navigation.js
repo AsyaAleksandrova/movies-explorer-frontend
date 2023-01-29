@@ -20,7 +20,7 @@ function Navigation() {
          <label className={`${burgerIsOpen? 'menu__burger_open' : 'menu__burger'}`}><button type='button' onClick={handleOpenMenu} className='menu__button' /></label>
          <ul className={`menu__list ${burgerIsOpen && 'menu__list_open'}`}>
             <li className='menu__block'>
-               <NavLink to={'/main'} onClick={closeMenu} className='menu__item menu__item_main'>
+               <NavLink to={'/'} onClick={closeMenu} className='menu__item menu__item_main'>
                   {({ isActive }) => (<p className={isActive ? 'menu__text menu__text_active' :'menu__text'}>Главная</p>)}
                </NavLink>
                <NavLink to={'/movies'} onClick={closeMenu} className={`menu__item`}>
