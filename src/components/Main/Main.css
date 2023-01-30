@@ -1,5 +1,1 @@
-.main{
-   width: 100%;
-   min-height: calc(100vh);
-   background-color: #202020;
-}
+@import url(../../blocks/main/main.css);
