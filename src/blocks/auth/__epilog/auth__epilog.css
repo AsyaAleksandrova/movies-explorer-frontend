@@ -1,0 +1,23 @@
+.auth__epilog {
+   font-family: 'Inter';
+   font-weight: 400;
+   font-size: 14px;
+   line-height: 17px;
+   display: flex;
+   flex-direction: row;
+   gap: 6px;
+   justify-content: center;
+   position: absolute;
+   bottom: 0;
+   width: 100%;
+   text-align: center;
+}
+
+@media screen and (max-width: 480px) {
+   .auth__epilog {
+      gap: 7px;
+      bottom: 30px;
+      font-size: 12px;
+      line-height: 15px;
+   }
+}
