@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import './App.css';
 import Layout from '../Layout/Layout';
 import Main from '../Main/Main';
@@ -11,8 +11,20 @@ import Profile from '../Profile/Profile';
 import NoPage from '../NoPage/NoPage';
 
 function App() {
-  // eslint-disable-next-line no-unused-vars
+  const navigate = useNavigate();
   const [loggedIn, setLoggedIn] = useState(false);
+
+  const handleRegister = () => {
+    console.log('Регистрация');
+    setLoggedIn(true);
+    navigate('/');
+  }
+
+  const handleLogin = () => {
+    console.log('Вход');
+    setLoggedIn(true);
+    navigate('/');
+  }  
 
   return (
     <>
@@ -23,8 +35,8 @@ function App() {
           <Route path='/saved-movies' element={<SavedMovies />} />
           <Route path='/profile' element={<Profile />} />
         </Route>
-        <Route path='/signup' element={ <Register /> } />
-        <Route path='/signin' element={<Login />} />
+        <Route path='/signup' element={ <Register onSubmit={handleRegister} /> } />
+        <Route path='/signin' element={<Login onSubmit={handleLogin} />} />
         <Route path="*" element={<NoPage />} />
       </Routes>
     </>
