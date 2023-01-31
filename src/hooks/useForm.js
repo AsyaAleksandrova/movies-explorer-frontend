@@ -9,8 +9,8 @@ export function useForm(inputValues) {
     setValues(event.target.value);
   };
 
-  const refreshValue = () => {
-    setValues('');
+  const refreshValue = (onDefault) => {
+    setValues(onDefault);
     setBlurValue(false);
     setIsChangedValue(false);
   }

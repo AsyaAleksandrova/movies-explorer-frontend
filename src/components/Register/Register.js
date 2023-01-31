@@ -10,16 +10,16 @@ function Register({ onSubmit }) {
    const [btnName, setBtnName] = useState('Зарегистрироваться');
    const [disableButton, setDisableButton] = useState(true);
    const [name, handleChangeName, isChangedName, blurName, setBlurName, refreshName] = useForm('');
-   const [nameError, checkNameError] = ValidateTextInput(2, 8, 'text');
+   const [nameError, checkNameError] = ValidateTextInput(2, 30, 'text');
    const [email, handleChangeEmail, isChangedEmail, blurEmail, setBlurEmail, refreshEmail] = useForm('');
    const [emailError, checkEmailError] = ValidateTextInput(0, 200, 'email');
    const [password, handleChangePass, isChangedPass, blurPass, setBlurPass, refreshPass] = useForm('');
    const [passError, checkPassError] = ValidateTextInput(8, 30, 'text');
 
    useEffect(() => {
-      refreshName();
-      refreshEmail();
-      refreshPass();
+      refreshName('');
+      refreshEmail('');
+      refreshPass('');
    }, []);
 
    useEffect(() => { checkNameError(name) }, [name]);
@@ -39,9 +39,9 @@ function Register({ onSubmit }) {
       e.preventDefault();
       setBtnName('Проверяем...');
       onSubmit({ name, email, password })
-         .finally(() => {
+//         .finally(() => {
             setBtnName('Зарегистрироваться')
-         });
+//         });
    }   
 
    return (

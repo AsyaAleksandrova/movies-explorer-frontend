@@ -15,8 +15,8 @@ function Login({ onSubmit }) {
    const [passError, checkPassError] = ValidateTextInput(8, 30, 'text');
 
    useEffect(() => {
-      refreshEmail();
-      refreshPass();
+      refreshEmail('');
+      refreshPass('');
    }, []);
 
    useEffect(() => { checkEmailError(email) }, [email]);
@@ -35,10 +35,10 @@ function Login({ onSubmit }) {
       e.preventDefault();
       setBtnName('Проверяем...');
       onSubmit({ email, password })
-         .finally(() => {
+//         .finally(() => {
             setBtnName('Войти')
-         });
-   }   
+//         });
+   }
 
    return (
       <main className='main'>
@@ -69,7 +69,7 @@ function Login({ onSubmit }) {
                      value={password}
                      type="password"
                      name="password"
-                     autoComplete="new-password"
+                     autoComplete="current-password"
                      required
                      className={`auth__input ${(blurPass && passError) && 'auth__input_invalid'}`}
                      placeholder=""
