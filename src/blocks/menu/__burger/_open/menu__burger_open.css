@@ -1,8 +1,8 @@
 .menu__burger_open {
    display: none;
-   position: absolute;
-   top: -10px;
-   right: 0;
+   position: fixed;
+   top: 20px;
+   right: 20px;
 }
 
 .menu__burger_open::before {

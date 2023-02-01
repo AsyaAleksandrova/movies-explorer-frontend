@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import './App.css';
 import Header from '../Header/Header';
@@ -10,11 +10,13 @@ import Register from '../Register/Register';
 import Login from '../Login/Login';
 import Profile from '../Profile/Profile';
 import NoPage from '../NoPage/NoPage';
+import * as moviesApi from '../../utils/moviesApi';
 
 function App() {
   const navigate = useNavigate();
   const [loggedIn, setLoggedIn] = useState(false);
-  const [currentUser, setCurrentUser] = useState({name: 'Asya', email: 'asya@asya.ru'})
+  const [currentUser, setCurrentUser] = useState({ name: 'Asya', email: 'asya@asya.ru' });
+  const [allMovies, setAllMovies] = useState({});
 
   const handleRegister = () => {
     console.log('Регистрация');
@@ -39,13 +41,45 @@ function App() {
     setCurrentUser({name: name, email: email});
   }
 
+  const handleAddMovie = () => {
+    console.log('добавлено в любимое')
+  }
+
+  const handleDeleteMovie = () => {
+    console.log('удалено из любимого')
+  }  
+
+  const getMoviesSet = () => {
+    moviesApi.getMovies()
+      .then((movies) => {
+        setAllMovies(movies);
+        localStorage.setItem('movies', JSON.stringify(movies))
+      })
+      .catch((e) => {
+        console.log(e)
+      })
+      .finally(() => {
+        console.log('запрошены видео с сервера');
+    })
+  }
+
+  useEffect(() => {
+    getMoviesSet();
+  }, [])
+
   return (
     <>
       <Routes>
         <Route path='/' element={<Header loggedIn={loggedIn} />}>
           <Route path='/' element={ <Footer/> }>
-            <Route path='/' element={ <Main /> } />
-            <Route path='/movies' element={ <Movies /> } />
+            <Route path='/' element={<Main  /> } />
+            <Route path='/movies'
+              element={
+                <Movies
+                  movies={allMovies}
+                  onAddMovie={handleAddMovie}
+                  onDeleteMovie={handleDeleteMovie}
+                />} />
             <Route path='/saved-movies' element={<SavedMovies />} />
           </Route>
           <Route path='/profile' element={<Profile currentUser={currentUser} onExit={ handleLogout } onSubmit={ handleEditUser } />} />
