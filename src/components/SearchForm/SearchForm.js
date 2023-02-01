@@ -1,10 +1,13 @@
 import React from 'react';
 import './SearchForm.css';
 
-function SearchForm() {
+function SearchForm({ setOpenPreloader, openPopupInfo }) {
 
-   const handleSubmit = () => {
-      console.log('поиск')
+   const handleSubmit = (e) => {
+      e.preventDefault();
+      openPopupInfo('Ошибка поиска', 'Сервис поиска фильмов еще не разработан');
+      setOpenPreloader(true);
+      
    }
 
    return (

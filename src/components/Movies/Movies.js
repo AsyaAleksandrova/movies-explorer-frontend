@@ -3,11 +3,11 @@ import './Movies.css';
 import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 
-function Movies({movies, onAddMovie, onDeleteMovie}) {
+function Movies({ movies, onAddMovie, onDeleteMovie, openPopupInfo, setOpenPreloader }) {
 
    return (
       <main className='movies'>
-         <SearchForm />
+         <SearchForm setOpenPreloader={setOpenPreloader} openPopupInfo={openPopupInfo} />
          <MoviesCardList
             movies={movies}
             onAddMovie={onAddMovie}

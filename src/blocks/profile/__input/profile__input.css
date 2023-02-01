@@ -4,7 +4,7 @@
    width: calc(100% - 100px);
    margin: 0;
    padding: 0 0 0 30px;
-   font-family: 'Inter';
+   font-family: Inter, Helvetica, sans-serif;
    font-weight: 500;
    font-size: 11px;
    line-height: 13px;

@@ -35,7 +35,7 @@ function Profile({ currentUser, onExit, onSubmit }) {
       e.preventDefault();
       setBtnName('Проверяем...');
       onSubmit({ name, email })
-//         .finally(() => {      
+//         .finally(() => {
       setBtnName('Сохранить');
       setIsEdit(false);
 //    });

@@ -36,7 +36,7 @@ function Login({ onSubmit }) {
       setBtnName('Проверяем...');
       onSubmit({ email, password })
 //         .finally(() => {
-            setBtnName('Войти')
+      setBtnName('Войти');
 //         });
    }
 

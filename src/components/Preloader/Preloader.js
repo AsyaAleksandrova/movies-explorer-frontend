@@ -13,7 +13,7 @@ function Preloader() {
             ariaLabel="MagnifyingGlass-loading"
             wrapperStyle={{}}
             wrapperClass="MagnifyingGlass-wrapper"
-            glassColor = '#ffffff'
+            glassColor = 'transparent'
             color = '#4285f4'
          />
       </div>

@@ -40,7 +40,7 @@ function Register({ onSubmit }) {
       setBtnName('Проверяем...');
       onSubmit({ name, email, password })
 //         .finally(() => {
-            setBtnName('Зарегистрироваться')
+      setBtnName('Зарегистрироваться');
 //         });
    }   
 
