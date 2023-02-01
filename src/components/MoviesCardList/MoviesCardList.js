@@ -1,9 +1,10 @@
-import React from 'react';
+import React, {useState} from 'react';
 import './MoviesCardList.css';
 import Preloader from '../Preloader/Preloader';
 import MoviesCard from '../MoviesCard/MoviesCard';
 
 function MoviesCardList({ movies, onAddMovie, onDeleteMovie, saved }) {
+   const[visible, setVisible] = useState(false)
 
    const handleLoadMovies = () => {
       console.log('ищу');
@@ -11,7 +12,7 @@ function MoviesCardList({ movies, onAddMovie, onDeleteMovie, saved }) {
 
    return (
       <section className='cinema'>
-         <Preloader />
+         {visible && <Preloader />}
          <ul className="cinema__list">
             {(movies.length > 0) && movies.map((movie) => (
                <MoviesCard
