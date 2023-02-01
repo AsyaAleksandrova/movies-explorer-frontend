@@ -3,8 +3,8 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './Login.css';
 import logoPath from '../../images/logo.svg';
-import { useForm } from '../../hooks/useForm';
-import { ValidateTextInput } from '../../hooks/validateTextInput';
+import { useForm } from '../../utils/useForm';
+import { ValidateTextInput } from '../../utils/validateTextInput';
 
 function Login({ onSubmit }) {
    const [btnName, setBtnName] = useState('Войти');

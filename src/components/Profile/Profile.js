@@ -1,8 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {useEffect, useState} from 'react';
 import './Profile.css';
-import { useForm } from '../../hooks/useForm';
-import { ValidateTextInput } from '../../hooks/validateTextInput';
+import { useForm } from '../../utils/useForm';
+import { ValidateTextInput } from '../../utils/validateTextInput';
 
 function Profile({ currentUser, onExit, onSubmit }) {
    const [isEdit, setIsEdit] = useState(false);
