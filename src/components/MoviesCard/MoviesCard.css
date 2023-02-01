@@ -5,3 +5,4 @@
 @import url(../../blocks/film/__preview-box/film__preview-box.css);
 @import url(../../blocks/film/__preview/film__preview.css);
 @import url(../../blocks/film/__like/film__like.css);
+@import url(../../blocks/film/__delete/film__delete.css);

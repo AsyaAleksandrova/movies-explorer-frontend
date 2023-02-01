@@ -11,7 +11,9 @@ function Movies({movies, onAddMovie, onDeleteMovie}) {
          <MoviesCardList
             movies={movies}
             onAddMovie={onAddMovie}
-            onDeleteMovie={onDeleteMovie} />
+            onDeleteMovie={onDeleteMovie}
+            saved={false}
+         />
       </main>
    )
 }

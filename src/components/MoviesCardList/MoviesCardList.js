@@ -3,10 +3,10 @@ import './MoviesCardList.css';
 import Preloader from '../Preloader/Preloader';
 import MoviesCard from '../MoviesCard/MoviesCard';
 
-function MoviesCardList({ movies, onAddMovie, onDeleteMovie }) {
+function MoviesCardList({ movies, onAddMovie, onDeleteMovie, saved }) {
 
    const handleLoadMovies = () => {
-
+      console.log('ищу');
    }
 
    return (
@@ -18,7 +18,9 @@ function MoviesCardList({ movies, onAddMovie, onDeleteMovie }) {
                   movie={movie}
                   key={movie.id}
                   onAddMovie={onAddMovie}
-                  onDeleteMovie={onDeleteMovie} />
+                  onDeleteMovie={onDeleteMovie}
+                  saved={saved}
+               />
             ))}
          </ul>
          <button

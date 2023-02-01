@@ -16,7 +16,8 @@ function App() {
   const navigate = useNavigate();
   const [loggedIn, setLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState({ name: 'Asya', email: 'asya@asya.ru' });
-  const [allMovies, setAllMovies] = useState({});
+  const [allMovies, setAllMovies] = useState([]);
+  const [myMovies, setMyMovies] = useState([]);
 
   const handleRegister = () => {
     console.log('Регистрация');
@@ -41,12 +42,16 @@ function App() {
     setCurrentUser({name: name, email: email});
   }
 
-  const handleAddMovie = () => {
-    console.log('добавлено в любимое')
+  const handleAddMovie = (movie) => {
+    setMyMovies(myMovies.concat(movie));
+    console.log('добавлено в любимое');
   }
 
-  const handleDeleteMovie = () => {
-    console.log('удалено из любимого')
+  const handleDeleteMovie = (movie) => {
+    let arr = myMovies;
+    const del = arr.splice(arr.indexOf(movie), 1);
+    setMyMovies(arr);
+    console.log('удалено из любимого');
   }  
 
   const getMoviesSet = () => {
@@ -80,7 +85,11 @@ function App() {
                   onAddMovie={handleAddMovie}
                   onDeleteMovie={handleDeleteMovie}
                 />} />
-            <Route path='/saved-movies' element={<SavedMovies />} />
+            <Route path='/saved-movies' element={
+              <SavedMovies
+                movies={myMovies}
+                onDeleteMovie={handleDeleteMovie}
+              />} />
           </Route>
           <Route path='/profile' element={<Profile currentUser={currentUser} onExit={ handleLogout } onSubmit={ handleEditUser } />} />
         </Route>
