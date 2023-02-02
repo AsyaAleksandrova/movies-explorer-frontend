@@ -43,7 +43,7 @@ function Login({ onSubmit }) {
    return (
       <main className='main'>
          <section className='auth'>
-            <img src={logoPath} alt='Логотип' className='auth__logo' />
+            <Link to={'/'}><img src={logoPath} alt='Логотип' className='auth__logo' /></Link>
             <h1 className='auth__title'>Рады видеть!</h1>
             <form className='auth__form' onSubmit={handleSubmit} name='register'>
                <div className='auth__input-container'>

@@ -28,4 +28,5 @@
 .search__input:focus {
    outline: none;
    outline-offset: unset;
+   border-bottom: 1px solid #8b8b8b;
 }

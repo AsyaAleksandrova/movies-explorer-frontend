@@ -9,7 +9,7 @@ function Header({loggedIn}) {
    return (
       <>
          <header className='header'>
-            <img src={logoPath} alt='Логотип' className='header__logo' />
+            <Link to={'/'}><img src={logoPath} alt='Логотип' className='header__logo' /></Link>
             {loggedIn && <Navigation />}
             <div>
                {!loggedIn && <Link to={'/signup'}>
