@@ -30,9 +30,9 @@ function MoviesCard({ movie, onAddMovie, onDeleteMovie, saved }) {
             <p className='film__duration'>{duration}</p>
             {!saved && <button onClick={handleLikeMovie} type='button' className={`film__like ${liked ? 'film__like_active' : ''}`}></button>}
             {saved && <button onClick={handleLikeMovie} type='button' className='film__delete'></button>}
-            <div className='film__preview-box'>
+            <a className='film__preview-box' href={movie.trailerLink} target='_blank' rel="noreferrer">
                <img src={url} alt={movie.nameRU} className='film__preview' />
-            </div>
+            </a>
          </div>
       </li>
    )

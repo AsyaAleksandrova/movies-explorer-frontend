@@ -12,3 +12,4 @@
 @import url(../../blocks/auth/__epilog/auth__epilog.css);
 @import url(../../blocks/auth/__question/auth__question.css);
 @import url(../../blocks/auth/__link/auth__link.css);
+@import url(../../blocks/auth/__server-error/auth__server-error.css);

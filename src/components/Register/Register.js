@@ -6,11 +6,11 @@ import logoPath from '../../images/logo.svg';
 import { useForm } from '../../utils/useForm';
 import { ValidateTextInput } from '../../utils/validateTextInput';
 
-function Register({ onSubmit }) {
+function Register({ onSubmit, error, setError }) {
    const [btnName, setBtnName] = useState('Зарегистрироваться');
    const [disableButton, setDisableButton] = useState(true);
    const [name, handleChangeName, isChangedName, blurName, setBlurName, refreshName] = useForm('');
-   const [nameError, checkNameError] = ValidateTextInput(2, 30, 'text');
+   const [nameError, checkNameError] = ValidateTextInput(2, 30, 'name');
    const [email, handleChangeEmail, isChangedEmail, blurEmail, setBlurEmail, refreshEmail] = useForm('');
    const [emailError, checkEmailError] = ValidateTextInput(0, 200, 'email');
    const [password, handleChangePass, isChangedPass, blurPass, setBlurPass, refreshPass] = useForm('');
@@ -20,6 +20,7 @@ function Register({ onSubmit }) {
       refreshName('');
       refreshEmail('');
       refreshPass('');
+      setError('');
    }, []);
 
    useEffect(() => { checkNameError(name) }, [name]);
@@ -39,9 +40,9 @@ function Register({ onSubmit }) {
       e.preventDefault();
       setBtnName('Проверяем...');
       onSubmit({ name, email, password })
-//         .finally(() => {
-      setBtnName('Зарегистрироваться');
-//         });
+        .finally(() => {
+         setBtnName('Зарегистрироваться');
+        });
    }   
 
    return (
@@ -96,13 +97,13 @@ function Register({ onSubmit }) {
                   />
                   {(blurPass && passError) && <div className='auth__error'>{ passError }</div>}                  
                </div>
+               {error !== '' && <p className='auth__server-error'>{ error }</p>}
                <button type="submit" className="auth__button" disabled={disableButton}>{btnName}</button>
             </form>
             <div className='auth__epilog'>
                <p className='auth__question'>Уже зарегистрированы?</p>
                <Link to={'/signin'} className='auth__link'>Войти</Link>               
             </div>
-
          </section>
       </main>
    )
