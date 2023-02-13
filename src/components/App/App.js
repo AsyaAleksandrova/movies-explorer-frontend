@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, {useEffect, useState} from 'react';
+import React, { useState} from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
+import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import './App.css';
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
@@ -15,6 +16,8 @@ import InfoPopup from '../InfoPopup/InfoPopup';
 import Preloader from '../Preloader/Preloader';
 import * as moviesApi from '../../utils/moviesApi';
 import * as mainApi from '../../utils/mainApi';
+
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
 function App() {
   const navigate = useNavigate();
@@ -36,7 +39,8 @@ function App() {
         openPopupInfo('Регистрация', 'Регистрация прошла успешно! Добро пожаловать на сайт!');
         setCurrentUser({ name: res.user.name, email: res.user.email, _id: res.user._id });
         setLoggedIn(true);
-        navigate('/movies');     
+        navigate('/movies');
+        setRegError('');
       })
       .catch((e) => {
         switch(e.status) {
@@ -56,6 +60,7 @@ function App() {
         setCurrentUser({ name: res.user.name, email: res.user.email, _id: res.user._id });
         setLoggedIn(true);
         navigate('/movies'); 
+        setLoginError('');
       })
       .catch((e) => {
        closeAllPopups();
@@ -81,11 +86,12 @@ function App() {
   };
 
   const handleEditUser = (name, email) => {
-    return mainApi.editUser()
+    return mainApi.editUser(name, email)
       .then((res) => {
-        setCurrentUser({ name: res.user.name, email: res.user.email });
+        setCurrentUser({ name: res.name, email: res.email });
         setLoggedIn(true);
         openPopupInfo('Изменение данных', 'Данные пользователя успешно изменены');
+        setEditError('');
       })
       .catch((e) => {
         switch(e.status) {
@@ -122,8 +128,10 @@ function App() {
       })
   };
 
-  const searchFilm = () => {
-    getMoviesSet()
+  const searchFilm = (query, short) => {
+    localStorage.setItem('query', query);
+    localStorage.setItem('short', short);
+    return getMoviesSet()
   }
 
   const openPopupInfo = (title, message) => {
@@ -138,37 +146,46 @@ function App() {
   }
 
   return (
-    <>
+    <CurrentUserContext.Provider value={currentUser}>
       <Routes>
         <Route path='/' element={<Header loggedIn={loggedIn} />}>
           <Route path='/' element={ <Footer/> }>
-            <Route path='/' element={<Main  /> } />
-            <Route path='/movies'
-              element={
-                <Movies
-                  movies={allMovies}
-                  onAddMovie={handleAddMovie}
-                  onDeleteMovie={handleDeleteMovie}
-                  openPopupInfo={openPopupInfo}
-                  setOpenPreloader={setOpenPreloader}
-                  searchFilm={getMoviesSet}
-                />} />
-            <Route path='/saved-movies' element={
+          <Route path='/' element={<Main />} />
+          <Route path='/movies' element={
+            <ProtectedRoute loggedIn={loggedIn}>
+              <Movies
+                movies={allMovies}
+                onAddMovie={handleAddMovie}
+                onDeleteMovie={handleDeleteMovie}
+                openPopupInfo={openPopupInfo}
+                setOpenPreloader={setOpenPreloader}
+                searchFilm={searchFilm}              
+              />                
+            </ProtectedRoute>
+          }/>
+          <Route path='/saved-movies' element={
+            <ProtectedRoute loggedIn={loggedIn}>
               <SavedMovies
                 movies={myMovies}
                 onDeleteMovie={handleDeleteMovie}
                 openPopupInfo={openPopupInfo}
                 setOpenPreloader={setOpenPreloader}
-              />} />
+                searchFilm={searchFilm}
+              />
+            </ProtectedRoute>
+          } />
           </Route>
           <Route path='/profile' element={
+            <ProtectedRoute loggedIn={loggedIn}>
             <Profile
               currentUser={currentUser}
               onExit={handleLogout}
               onSubmit={handleEditUser}
               error={editError}
               setError={setEditError}
-            />} />
+            />
+            </ProtectedRoute>
+          } />
         </Route>
         <Route path='/signup' element={
           <Register
@@ -186,7 +203,7 @@ function App() {
       </Routes>
       <InfoPopup isOpen={isInfoPopupOpen} onClose={closeAllPopups} title={infoTitle} message={infoMessage} />
       {openPreloader && <Preloader />}
-    </>
+    </CurrentUserContext.Provider>
   );
 }
 

@@ -1,17 +1,61 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import './MoviesCardList.css';
 import MoviesCard from '../MoviesCard/MoviesCard';
 
 function MoviesCardList({ movies, onAddMovie, onDeleteMovie, saved }) {
 
+   const [initialCardsAmt, setInitialCardsAmt] = useState(() => {
+      const windowSize = window.innerWidth;
+      if (windowSize < 670) {
+         return 5
+        } else if (windowSize < 1060) {
+         return 8
+        } else {
+         return 12
+        }
+   });
+   
+   const [addCardsAmt, setAddCardsAmt] = useState(() => {
+      const windowSize = window.innerWidth;
+      if(windowSize < 1060) {
+         return 2
+        } else {
+         return 3
+        }
+   });
+
+   const handleChangeWidth = () => {
+        const windowSize = window.innerWidth;
+        if(windowSize < 670) {
+           setInitialCardsAmt(5);
+           setAddCardsAmt(2);
+        } else if(windowSize < 1060) {
+           setInitialCardsAmt(8);
+           setAddCardsAmt(2);
+        } else {
+           setInitialCardsAmt(12);
+           setAddCardsAmt(3);
+        }
+   }  
+   
+    useEffect(() => {
+        window.addEventListener('resize', handleChangeWidth);
+    }, []);   
+   
+   let displayedMovies = movies;
+
+   if (!saved) {
+      displayedMovies = movies?.slice(0, initialCardsAmt);
+   } 
+   
    const handleLoadMovies = () => {
-      console.log('загружаю');
+      setInitialCardsAmt(prevState => {return prevState + addCardsAmt});
    }
 
    return (
       <section className='cinema'>
          <ul className="cinema__list">
-            {(movies.length > 0) && movies.map((movie) => (
+            {(displayedMovies.length > 0) && displayedMovies.map((movie) => (
                <MoviesCard
                   movie={movie}
                   key={movie.id}
@@ -21,11 +65,12 @@ function MoviesCardList({ movies, onAddMovie, onDeleteMovie, saved }) {
                />
             ))}
          </ul>
-         <button
+         {!saved &&
+            <button
             className={`cinema__more`}
             onClick={handleLoadMovies} >
             Ещё
-         </button>
+         </button>}
       </section>
    )
 }

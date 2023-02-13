@@ -1,4 +1,5 @@
-const BASE_URL = 'https://videoapi.nomoredomainsclub.ru/api';
+//const BASE_URL = 'https://videoapi.nomoredomainsclub.ru/api';
+const BASE_URL = 'http://localhost:3001/api'
 
 export const register = (name, email, password) => {
    return fetch(`${BASE_URL}/signup`, {
