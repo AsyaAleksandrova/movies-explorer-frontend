@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState} from 'react';
-import { Routes, Route, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState} from 'react';
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import './App.css';
 import Header from '../Header/Header';
@@ -21,10 +21,11 @@ import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
 function App() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [loggedIn, setLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState({ name: '', email: '', _id: '' });
-  const [allMovies, setAllMovies] = useState([]);
-  const [myMovies, setMyMovies] = useState([]);
+  const [filterMovies, setFilterMovies] = useState([]);
+  const [filterMyMovies, setFilterMyMovies] = useState([]);
   const [isInfoPopupOpen, setIsInfoPopupOpen] = useState(false);
   const [infoTitle, setInfoTitle] = useState('');
   const [infoMessage, setInfoMessage] = useState('');
@@ -40,6 +41,7 @@ function App() {
         setCurrentUser({ name: res.user.name, email: res.user.email, _id: res.user._id });
         setLoggedIn(true);
         navigate('/movies');
+        getMyMovies();
         setRegError('');
       })
       .catch((e) => {
@@ -59,7 +61,8 @@ function App() {
       .then((res) => {
         setCurrentUser({ name: res.user.name, email: res.user.email, _id: res.user._id });
         setLoggedIn(true);
-        navigate('/movies'); 
+        navigate('/movies');
+        getMyMovies();
         setLoginError('');
       })
       .catch((e) => {
@@ -77,6 +80,7 @@ function App() {
     return mainApi.logout()
       .then(() => {
         setCurrentUser({ name: '', email: '', _id: '' });
+        localStorage.clear();
         setLoggedIn(false);
         navigate('/');
       })
@@ -84,6 +88,24 @@ function App() {
         openPopupInfo('Ошибка', 'Что-то пошло не так. Попробуйте повторить запрос.');
       })  
   };
+
+  const checkToken = () => {
+    return mainApi.checkToken()
+      .then((res) => {
+        setCurrentUser({ name: res.name, email: res.email, _id: res._id });
+        setLoggedIn(true);
+        getMyMovies();
+        navigate(location.pathname);
+      })
+      .catch((e) => {
+        console.log(e);
+        setLoggedIn(false);
+      });
+  };
+
+  useEffect(() => {
+    checkToken();
+  }, [])
 
   const handleEditUser = (name, email) => {
     return mainApi.editUser(name, email)
@@ -105,34 +127,113 @@ function App() {
       });    
   };
 
+  const getMyMovies = () => {
+    return mainApi.getMyFilms()
+      .then((res) => {
+        localStorage.setItem('myMovies', JSON.stringify(res))
+        setFilterMyMovies(res);
+      })
+      .catch((e) => {
+        openPopupInfo('Ошибка', 'Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз.');
+      })  
+  }
+
   const handleAddMovie = (movie) => {
-    setMyMovies(myMovies.concat(movie));
-    openPopupInfo('Информационное сообщение', 'Добавлено в любимое. Передача данных на cервер еще не реализована');
+    const newFilm = {
+      country: movie.country,
+      director: movie.director,
+      duration: movie.duration,
+      year: movie.year,
+      image: `https://api.nomoreparties.co/${movie.image.url}`,
+      trailerLink: movie.trailerLink,
+      thumbnail:`https://api.nomoreparties.co${movie.image.url}` ,
+      movieId: movie.id,
+      nameRU: movie.nameRU,
+      nameEN: movie.nameEN
+    }
+    return mainApi.addFilm(newFilm)
+      .then(() => {
+        getMyMovies();
+      })
+      .catch((e) => {
+        switch(e.status) {
+          case 400: openPopupInfo('Ошибка', 'Переданые некорректные данные при добавлении фильма.');
+            break;
+          default: openPopupInfo('Ошибка', 'Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз.');
+            break;
+        }
+      });
+    
   };
 
   const handleDeleteMovie = (movie) => {
-    let arr = myMovies;
-    arr.splice(arr.indexOf(movie), 1);
-    setMyMovies(arr);
-    openPopupInfo('Информационное сообщение', 'Видео удалено из списка сохраненных. Передача данных на cервер еще не реализована');
+    return mainApi.deleteFilm(movie._id)
+      .then(() => {
+        getMyMovies();
+    })
+      .catch((e) => {
+        switch(e.status) {
+          case 403: openPopupInfo('Ошибка', 'Отсутствуют права для удаления фильма.');
+            break;
+          default: openPopupInfo('Ошибка', 'Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз.');
+            break;
+        }
+      });
   };
 
   const getMoviesSet = () => {
     return moviesApi.getMovies()
       .then((movies) => {
-        setAllMovies(movies);
-        localStorage.setItem('movies', JSON.stringify(movies))
+        localStorage.setItem('movies', JSON.stringify(movies));
       })
-      .catch((e) => {
-        console.log(e)
+      .catch(() => {
+        openPopupInfo('Ошибка', 'Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз.');
       })
   };
 
-  const searchFilm = (query, short) => {
-    localStorage.setItem('query', query);
-    localStorage.setItem('short', short);
-    return getMoviesSet()
+  const filterFilm = (movies, query, short) => {
+    let filterArray = [];
+    movies.forEach((movie) => {
+      if (movie.nameRU.toLowerCase().includes(query.toLowerCase()) || query === '') {
+        if (short) {
+          if (movie.duration <= 40) {
+            return filterArray.push(movie)
+          } return
+        } 
+        return filterArray.push(movie)
+      } 
+    });
+
+    return filterArray
   }
+
+  const searchFilm = () => {
+    const query = localStorage.getItem('query');
+    let short = false;
+    if (localStorage.getItem('short') === 'true') { short = true } else { short = false }
+    if (!localStorage.getItem('movies')) {
+      return getMoviesSet()
+        .finally(() => {
+          const filter = filterFilm(JSON.parse(localStorage.getItem('movies')), query, short)
+          setFilterMovies(filter);
+          localStorage.setItem('filterMovies', JSON.stringify(filter));
+          setOpenPreloader(false);
+        })
+    } else {
+      const filter = filterFilm(JSON.parse(localStorage.getItem('movies')), query, short)
+      setFilterMovies(filter);
+      localStorage.setItem('filterMovies', JSON.stringify(filter));
+      setOpenPreloader(false);
+    }
+  };
+
+  const searchMyFilm = () => {
+    const query = localStorage.getItem('query_myMovies');
+    let short = false;
+    if (localStorage.getItem('short_myMovies') === 'true') { short = true} else { short = false }    
+    setFilterMyMovies(filterFilm(JSON.parse(localStorage.getItem('myMovies')), query, short));
+    setOpenPreloader(false);
+  }  
 
   const openPopupInfo = (title, message) => {
     setInfoTitle(title);
@@ -153,24 +254,26 @@ function App() {
           <Route path='/' element={<Main />} />
           <Route path='/movies' element={
             <ProtectedRoute loggedIn={loggedIn}>
-              <Movies
-                movies={allMovies}
-                onAddMovie={handleAddMovie}
-                onDeleteMovie={handleDeleteMovie}
-                openPopupInfo={openPopupInfo}
-                setOpenPreloader={setOpenPreloader}
-                searchFilm={searchFilm}              
+                <Movies
+                  movies={filterMovies}
+                  setFilterMovies={setFilterMovies}
+                  onAddMovie={handleAddMovie}
+                  onDeleteMovie={handleDeleteMovie}
+                  openPopupInfo={openPopupInfo}
+                  setOpenPreloader={setOpenPreloader}
+                  searchFilm={searchFilm}              
               />                
             </ProtectedRoute>
           }/>
           <Route path='/saved-movies' element={
             <ProtectedRoute loggedIn={loggedIn}>
               <SavedMovies
-                movies={myMovies}
+                movies={filterMyMovies}
                 onDeleteMovie={handleDeleteMovie}
                 openPopupInfo={openPopupInfo}
                 setOpenPreloader={setOpenPreloader}
-                searchFilm={searchFilm}
+                searchFilm={searchMyFilm}
+                getMyMovies={getMyMovies}
               />
             </ProtectedRoute>
           } />

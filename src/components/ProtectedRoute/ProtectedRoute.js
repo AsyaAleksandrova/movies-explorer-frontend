@@ -6,7 +6,7 @@ const ProtectedRoute = ({ ...props }) => {
   if (props.loggedIn) {
     return props.children
   } else {
-    return (<Navigate to={'/signin'} />)
+    return (<Navigate to={'/'} />)
   }
 };
 

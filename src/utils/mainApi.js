@@ -71,3 +71,44 @@ export const editUser = (name, email) => {
             return Promise.reject(response);
          })
 };
+
+export const addFilm = (movie) => {
+   return fetch(`${BASE_URL}/movies`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(movie)
+   })
+      .then((response) => {
+         if (response.ok) {    
+            return response.json();
+         }
+            return Promise.reject(response);
+         })
+};
+
+export const getMyFilms = () => {
+   return fetch(`${BASE_URL}/movies`, {
+      method: 'GET',
+      credentials: 'include'
+   })
+      .then((response) => {
+         if (response.ok) {    
+            return response.json();
+         }
+            return Promise.reject(response);
+         })
+};
+
+export const deleteFilm = (id) => {
+   return fetch(`${BASE_URL}/movies/${id}`, {
+      method: 'DELETE',
+      credentials: 'include'
+   })
+      .then((response) => {
+         if (response.ok) {    
+            return response.json();
+         }
+            return Promise.reject(response);
+         })
+};

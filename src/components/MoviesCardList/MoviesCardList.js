@@ -58,14 +58,14 @@ function MoviesCardList({ movies, onAddMovie, onDeleteMovie, saved }) {
             {(displayedMovies.length > 0) && displayedMovies.map((movie) => (
                <MoviesCard
                   movie={movie}
-                  key={movie.id}
+                  key={saved? movie._id : movie.id}
                   onAddMovie={onAddMovie}
                   onDeleteMovie={onDeleteMovie}
                   saved={saved}
                />
             ))}
          </ul>
-         {!saved &&
+         {!saved && (movies.length > displayedMovies.length) &&
             <button
             className={`cinema__more`}
             onClick={handleLoadMovies} >
