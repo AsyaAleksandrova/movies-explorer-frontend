@@ -11,3 +11,11 @@
 ##
 ![Figma](https://img.shields.io/badge/figma-%23F24E1E.svg?style=for-the-badge&logo=figma&logoColor=white)  
 https://drive.google.com/drive/folders/1cz2I5qtNt5FHwVNRZArx29tz3RUkRPIG?usp=sharing
+
+##
+Visit: [HERE
+](https://videoclub.nomoredomainsclub.ru/)
+
+
+## !!Pull request!!
+https://github.com/AsyaAleksandrova/movies-explorer-frontend/pull/2
