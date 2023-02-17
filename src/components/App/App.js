@@ -40,6 +40,7 @@ function App() {
         openPopupInfo('Регистрация', 'Регистрация прошла успешно! Добро пожаловать на сайт!');
         setCurrentUser({ name: res.user.name, email: res.user.email, _id: res.user._id });
         setLoggedIn(true);
+        localStorage.setItem('login', 'true');
         navigate('/movies');
         getMyMovies();
         setRegError('');
@@ -61,6 +62,7 @@ function App() {
       .then((res) => {
         setCurrentUser({ name: res.user.name, email: res.user.email, _id: res.user._id });
         setLoggedIn(true);
+        localStorage.setItem('login', 'true');
         navigate('/movies');
         getMyMovies();
         setLoginError('');
@@ -90,17 +92,21 @@ function App() {
   };
 
   const checkToken = () => {
-    return mainApi.checkToken()
-      .then((res) => {
-        setCurrentUser({ name: res.name, email: res.email, _id: res._id });
-        setLoggedIn(true);
-        getMyMovies();
-        navigate(location.pathname);
-      })
-      .catch((e) => {
-        console.log(e);
-        setLoggedIn(false);
-      });
+    if (localStorage.getItem('login') === 'true') {
+      return mainApi.checkToken()
+        .then((res) => {
+          setCurrentUser({ name: res.name, email: res.email, _id: res._id });
+          setLoggedIn(true);
+          getMyMovies();
+          navigate(location.pathname);
+        })
+        .catch((e) => {
+          console.log(e);
+          setLoggedIn(false);
+        });      
+    } else {
+      return
+    }
   };
 
   useEffect(() => {
