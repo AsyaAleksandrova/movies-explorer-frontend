@@ -1,10 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import './Profile.css';
 import { useForm } from '../../utils/useForm';
 import { ValidateTextInput } from '../../utils/validateTextInput';
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
-function Profile({ currentUser, onExit, onSubmit, error, setError }) {
+function Profile({ onExit, onSubmit, error, setError }) {
+   const currentUser = useContext(CurrentUserContext);
    const [isEdit, setIsEdit] = useState(false);
    const [btnName, setBtnName] = useState('Сохранить');
    const [disableButton, setDisableButton] = useState(true);
@@ -22,10 +24,10 @@ function Profile({ currentUser, onExit, onSubmit, error, setError }) {
 
    useEffect(() => { checkNameError(name) }, [name]);
    useEffect(() => { checkEmailError(email) }, [email]);
-   useEffect(() => { checkButton() }, [nameError, emailError])
+   useEffect(() => { checkButton() }, [nameError, emailError, name, email])
 
    function checkButton() {
-      if (nameError==='' && emailError==='') {
+      if (nameError==='' && emailError==='' && (currentUser.name !== name || currentUser.email !== email)) {
          setDisableButton(false)
       } else {
          setDisableButton(true);

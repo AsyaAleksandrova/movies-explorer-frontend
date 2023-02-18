@@ -1,7 +1,7 @@
-const BASE_URL = 'https://videoapi.nomoredomainsclub.ru/api';
+import * as constant from './constant';
 
 export const register = (name, email, password) => {
-   return fetch(`${BASE_URL}/signup`, {
+   return fetch(`${constant.API_URL}/signup`, {
       method: 'POST',
       credentials: 'include',
       headers: { "Content-Type": "application/json" },
@@ -16,7 +16,7 @@ export const register = (name, email, password) => {
 };
 
 export const login = (email, password) => {
-   return fetch(`${BASE_URL}/signin`, {
+   return fetch(`${constant.API_URL}/signin`, {
       method: 'POST',
       credentials: 'include',
       headers: { "Content-Type": "application/json" },
@@ -31,7 +31,7 @@ export const login = (email, password) => {
 };
 
 export const logout = () => {
-   return fetch(`${BASE_URL}/signout`, {
+   return fetch(`${constant.API_URL}/signout`, {
       method: 'POST',
       credentials: 'include'
    })
@@ -44,7 +44,7 @@ export const logout = () => {
 };
 
 export const checkToken = (id) => {
-   return fetch(`${BASE_URL}/users/me`, {
+   return fetch(`${constant.API_URL}/users/me`, {
       method: 'GET',
       credentials: 'include'
    })
@@ -57,7 +57,7 @@ export const checkToken = (id) => {
 };
 
 export const editUser = (name, email) => {
-   return fetch(`${BASE_URL}/users/me`, {
+   return fetch(`${constant.API_URL}/users/me`, {
       method: 'PATCH',
       credentials: 'include',
       headers: { "Content-Type": "application/json" },
@@ -72,7 +72,7 @@ export const editUser = (name, email) => {
 };
 
 export const addFilm = (movie) => {
-   return fetch(`${BASE_URL}/movies`, {
+   return fetch(`${constant.API_URL}/movies`, {
       method: 'POST',
       credentials: 'include',
       headers: { "Content-Type": "application/json" },
@@ -87,7 +87,7 @@ export const addFilm = (movie) => {
 };
 
 export const getMyFilms = () => {
-   return fetch(`${BASE_URL}/movies`, {
+   return fetch(`${constant.API_URL}/movies`, {
       method: 'GET',
       credentials: 'include'
    })
@@ -100,7 +100,7 @@ export const getMyFilms = () => {
 };
 
 export const deleteFilm = (id) => {
-   return fetch(`${BASE_URL}/movies/${id}`, {
+   return fetch(`${constant.API_URL}/movies/${id}`, {
       method: 'DELETE',
       credentials: 'include'
    })

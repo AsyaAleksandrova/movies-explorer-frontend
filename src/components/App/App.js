@@ -287,7 +287,6 @@ function App() {
           <Route path='/profile' element={
             <ProtectedRoute loggedIn={loggedIn}>
             <Profile
-              currentUser={currentUser}
               onExit={handleLogout}
               onSubmit={handleEditUser}
               error={editError}
@@ -297,17 +296,21 @@ function App() {
           } />
         </Route>
         <Route path='/signup' element={
+          <ProtectedRoute loggedIn={!loggedIn}>
           <Register
             onSubmit={handleRegister}
             error={regError}
-            setError={setRegError}
-          />} />
+            setError={setRegError}/>            
+          </ProtectedRoute>
+        } />
         <Route path='/signin' element={
+          <ProtectedRoute loggedIn={!loggedIn}>
           <Login
             onSubmit={handleLogin}
             error={loginError}
-            setError={setLoginError}
-          />} />
+            setError={setLoginError}/>
+          </ProtectedRoute>
+        } />
         <Route path="*" element={<NoPage />} />
       </Routes>
       <InfoPopup isOpen={isInfoPopupOpen} onClose={closeAllPopups} title={infoTitle} message={infoMessage} />

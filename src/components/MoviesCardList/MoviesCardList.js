@@ -1,41 +1,17 @@
 import React, {useState, useEffect} from 'react';
 import './MoviesCardList.css';
 import MoviesCard from '../MoviesCard/MoviesCard';
+import * as constant from '../../utils/constant'
 
 function MoviesCardList({ movies, onAddMovie, onDeleteMovie, saved }) {
 
-   const [initialCardsAmt, setInitialCardsAmt] = useState(() => {
-      const windowSize = window.innerWidth;
-      if (windowSize < 670) {
-         return 5
-        } else if (windowSize < 1060) {
-         return 8
-        } else {
-         return 12
-        }
-   });
+   const [initialCardsAmt, setInitialCardsAmt] = useState(constant.INITIAL_CARDS_AMT);
    
-   const [addCardsAmt, setAddCardsAmt] = useState(() => {
-      const windowSize = window.innerWidth;
-      if(windowSize < 1060) {
-         return 2
-        } else {
-         return 3
-        }
-   });
+   const [addCardsAmt, setAddCardsAmt] = useState(constant.ADD_CARDS_AMT);
 
    const handleChangeWidth = () => {
-        const windowSize = window.innerWidth;
-        if(windowSize < 670) {
-           setInitialCardsAmt(5);
-           setAddCardsAmt(2);
-        } else if(windowSize < 1060) {
-           setInitialCardsAmt(8);
-           setAddCardsAmt(2);
-        } else {
-           setInitialCardsAmt(12);
-           setAddCardsAmt(3);
-        }
+      setInitialCardsAmt(constant.INITIAL_CARDS_AMT);
+      setAddCardsAmt(constant.ADD_CARDS_AMT);
    }  
    
     useEffect(() => {
