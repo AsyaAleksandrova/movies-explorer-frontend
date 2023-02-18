@@ -16,6 +16,7 @@ import InfoPopup from '../InfoPopup/InfoPopup';
 import Preloader from '../Preloader/Preloader';
 import * as moviesApi from '../../utils/moviesApi';
 import * as mainApi from '../../utils/mainApi';
+import * as constant from '../../utils/constant';
 
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
@@ -202,7 +203,7 @@ function App() {
     movies.forEach((movie) => {
       if (movie.nameRU.toLowerCase().includes(query.toLowerCase()) || query === '') {
         if (short) {
-          if (movie.duration <= 40) {
+          if (movie.duration <= constant.SHORT_FILM_LENGTH) {
             return filterArray.push(movie)
           } return
         } 
