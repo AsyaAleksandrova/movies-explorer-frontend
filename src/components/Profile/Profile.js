@@ -1,15 +1,17 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import './Profile.css';
 import { useForm } from '../../utils/useForm';
 import { ValidateTextInput } from '../../utils/validateTextInput';
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
-function Profile({ currentUser, onExit, onSubmit }) {
+function Profile({ onExit, onSubmit, error, setError }) {
+   const currentUser = useContext(CurrentUserContext);
    const [isEdit, setIsEdit] = useState(false);
    const [btnName, setBtnName] = useState('Сохранить');
    const [disableButton, setDisableButton] = useState(true);
    const [name, handleChangeName, isChangedName, blurName, setBlurName, refreshName] = useForm('');
-   const [nameError, checkNameError] = ValidateTextInput(2, 30, 'text');
+   const [nameError, checkNameError] = ValidateTextInput(2, 30, 'name');
    const [email, handleChangeEmail, isChangedEmail, blurEmail, setBlurEmail, refreshEmail] = useForm('');
    const [emailError, checkEmailError] = ValidateTextInput(0, 200, 'email');   
 
@@ -17,14 +19,15 @@ function Profile({ currentUser, onExit, onSubmit }) {
       setIsEdit(false);
       refreshName(currentUser.name);
       refreshEmail(currentUser.email);
+      setError('');
    }, []);
 
    useEffect(() => { checkNameError(name) }, [name]);
    useEffect(() => { checkEmailError(email) }, [email]);
-   useEffect(() => { checkButton() }, [nameError, emailError])
+   useEffect(() => { checkButton() }, [nameError, emailError, name, email])
 
    function checkButton() {
-      if (nameError==='' && emailError==='') {
+      if (nameError==='' && emailError==='' && (currentUser.name !== name || currentUser.email !== email)) {
          setDisableButton(false)
       } else {
          setDisableButton(true);
@@ -35,10 +38,11 @@ function Profile({ currentUser, onExit, onSubmit }) {
       e.preventDefault();
       setBtnName('Проверяем...');
       onSubmit({ name, email })
-//         .finally(() => {
-      setBtnName('Сохранить');
-      setIsEdit(false);
-//    });
+        .finally(() => {
+           setBtnName('Сохранить');
+           setDisableButton(true);
+            setIsEdit(false);
+         });
    }     
    
    const handleExit = () => {
@@ -92,6 +96,7 @@ function Profile({ currentUser, onExit, onSubmit }) {
                {isEdit && <button type="submit" className="auth__button" disabled={disableButton}>{btnName}</button>}
             </form>
             <div className='profile__buttons'>
+               {error !== '' && <p className='auth__server-error'>{ error }</p>}
                {!isEdit && <button onClick={ handleEdit } className='profile__edit' type='button'>Редактировать</button>}
                <button onClick={ handleExit } className='profile__exit' type='button'>Выйти из аккаунта</button>               
             </div>

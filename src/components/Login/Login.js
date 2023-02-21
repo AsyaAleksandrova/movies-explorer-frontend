@@ -6,7 +6,7 @@ import logoPath from '../../images/logo.svg';
 import { useForm } from '../../utils/useForm';
 import { ValidateTextInput } from '../../utils/validateTextInput';
 
-function Login({ onSubmit }) {
+function Login({ onSubmit, error, setError }) {
    const [btnName, setBtnName] = useState('Войти');
    const [disableButton, setDisableButton] = useState(true);
    const [email, handleChangeEmail, isChangedEmail, blurEmail, setBlurEmail, refreshEmail] = useForm('');
@@ -17,6 +17,7 @@ function Login({ onSubmit }) {
    useEffect(() => {
       refreshEmail('');
       refreshPass('');
+      setError('');
    }, []);
 
    useEffect(() => { checkEmailError(email) }, [email]);
@@ -35,9 +36,9 @@ function Login({ onSubmit }) {
       e.preventDefault();
       setBtnName('Проверяем...');
       onSubmit({ email, password })
-//         .finally(() => {
-      setBtnName('Войти');
-//         });
+        .finally(() => {
+            setBtnName('Войти');
+        });
    }
 
    return (
@@ -76,6 +77,7 @@ function Login({ onSubmit }) {
                   />
                   {(blurPass && passError) && <div className='auth__error'>{ passError }</div>}                  
                </div>
+               {error !== '' && <p className='auth__server-error'>{ error }</p>}
                <button type="submit" className="auth__button" disabled={disableButton}>{btnName}</button>
             </form>
             <div className='auth__epilog'>

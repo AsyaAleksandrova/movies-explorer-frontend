@@ -13,4 +13,10 @@
 https://drive.google.com/drive/folders/1cz2I5qtNt5FHwVNRZArx29tz3RUkRPIG?usp=sharing
 
 ##
-Visit at: https://videoclub.nomoredomainsclub.ru
+
+Visit: [HERE
+](https://videoclub.nomoredomainsclub.ru/)
+
+
+## !!Pull request!!
+https://github.com/AsyaAleksandrova/movies-explorer-frontend/pull/2
