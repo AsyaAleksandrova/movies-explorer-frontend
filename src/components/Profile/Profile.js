@@ -39,7 +39,8 @@ function Profile({ onExit, onSubmit, error, setError }) {
       setBtnName('Проверяем...');
       onSubmit({ name, email })
         .finally(() => {
-            setBtnName('Сохранить');
+           setBtnName('Сохранить');
+           setDisableButton(true);
             setIsEdit(false);
          });
    }     

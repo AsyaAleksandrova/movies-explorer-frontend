@@ -84,6 +84,8 @@ function App() {
       .then(() => {
         setCurrentUser({ name: '', email: '', _id: '' });
         localStorage.clear();
+        setFilterMovies([]);
+        setFilterMyMovies([]);
         setLoggedIn(false);
         navigate('/');
       })
@@ -117,7 +119,7 @@ function App() {
   const handleEditUser = (name, email) => {
     return mainApi.editUser(name, email)
       .then((res) => {
-        setCurrentUser({ name: res.name, email: res.email });
+        setCurrentUser({...currentUser, name: res.name, email: res.email });
         setLoggedIn(true);
         openPopupInfo('Изменение данных', 'Данные пользователя успешно изменены');
         setEditError('');
